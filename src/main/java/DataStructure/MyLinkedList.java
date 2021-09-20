@@ -1,11 +1,8 @@
 package DataStructure;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
-public class MyLinkedList<T> implements Iterable<T> {
+public class MyLinkedList<T> extends AbstractList<T> {
     private int size;
     private Node<T> head;
     private Node<T> tail;
@@ -30,6 +27,20 @@ public class MyLinkedList<T> implements Iterable<T> {
         modCount = 0;
     }
 
+    @Override
+    public T get(int index) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("Index must be >= 0 and < " + size);
+
+        var iterator = this.iterator();
+        int pos = 0;
+        while (pos != index) {
+            iterator.next();
+            pos++;
+        }
+        return iterator.next();
+    }
+
     public boolean isEmpty() {
         return size == 0;
     }
@@ -40,6 +51,14 @@ public class MyLinkedList<T> implements Iterable<T> {
 
     public boolean add(T value) {
         return addLast(value);
+    }
+
+    public T getFirst() {
+        return head.value;
+    }
+
+    public T getLast() {
+        return tail.value;
     }
 
     public boolean addFirst(T value) {
@@ -102,6 +121,14 @@ public class MyLinkedList<T> implements Iterable<T> {
         modCount++;
 
         return oldTail.value;
+    }
+
+    public void merge(MyLinkedList<T> another) {
+        if (!another.isEmpty()) {
+            this.tail.next = another.head;
+            another.head.prev = this.tail;
+            this.tail = another.tail;
+        }
     }
 
     private T removeWhenHeadAndTailAreEqual() {
