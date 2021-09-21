@@ -19,4 +19,12 @@ public class Edge {
     public double getProbability() {
         return probability;
     }
+
+    @Override
+    public String toString() {
+        return "Edge{" +
+                "number=" + number +
+                ", probability=" + probability +
+                '}';
+    }
 }

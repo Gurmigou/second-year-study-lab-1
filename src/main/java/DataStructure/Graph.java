@@ -81,21 +81,11 @@ public class Graph<T> {
         return marked == numberOfVertexes;
     }
 
-    public static class GraphAlgorithm<T> {
-        private final List<MyLinkedList<Pair<Integer, T>>> adjStructure;
+    public static record GraphAlgorithm<T>(
+            List<MyLinkedList<Pair<Integer, T>>> adjStructure) {
 
-        public GraphAlgorithm(List<MyLinkedList<Pair<Integer, T>>> adjStructure) {
-            this.adjStructure = adjStructure;
-        }
-
-        public static <T> GraphAlgorithm<T> implement(Graph<T> graph) {
-            var graphAlgorithm = new GraphAlgorithm<T>(new ArrayList<>());
-            Collections.copy(graphAlgorithm.adjStructure, graph.adjStructure);
-            return graphAlgorithm;
-        }
-
-        public List<MyLinkedList<Pair<Integer, T>>> adjStructure() {
-            return adjStructure;
+        public static <T> GraphAlgorithm<T> uses(Graph<T> graph) {
+            return new GraphAlgorithm<>(Collections.unmodifiableList(graph.adjStructure));
         }
     }
 }

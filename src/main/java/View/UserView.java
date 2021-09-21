@@ -1,14 +1,16 @@
 package View;
 
 import DataStructure.MyLinkedList;
+import DataStructure.Pair;
 import Pojo.Cube;
 import Pojo.Edge;
 
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.io.IOException;
 
-public class UserInputHandler {
+public class UserView {
     private static final String m1 = "Введіть кількість граней кубика (парна кількість <= 22):";
     private static final String m2 = "Число на грані ( >= 1):";
     private static final String m3 = "Ймовірність грані ( >= 0 <= 1): ";
@@ -39,21 +41,6 @@ public class UserInputHandler {
         if (probability < 0 || probability > 1)
             throw new IOException();
         return probability;
-    }
-
-    private static boolean cubeDataIsCorrect(MyLinkedList<Edge> list) {
-        double probability = 0;
-        for (Edge edge : list) {
-            probability += edge.getProbability();
-            if (Double.compare(probability, 1) > 0)
-                return false;
-        }
-        return true;
-    }
-
-    public static void main(String[] args) {
-        var list = new LinkedList<Integer>();
-        MyLinkedList<Cube> input = input();
     }
 
     public static MyLinkedList<Cube> input() {
@@ -92,5 +79,15 @@ public class UserInputHandler {
             }
         }
         return cubeList;
+    }
+
+    private static double roundDouble(double value, int floatDigitsRound) {
+        double pow = Math.pow(10, floatDigitsRound);
+        return Math.round((int)(value * pow * 10) / 10d) / pow;
+    }
+
+    public static void outputResult(Map<Integer, Double> map) {
+        map.forEach((i, d) -> System.out.println(
+                "Value: " + i + ", probability: " + roundDouble(d, 3)));
     }
 }

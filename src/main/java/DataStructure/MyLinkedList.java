@@ -125,9 +125,14 @@ public class MyLinkedList<T> extends AbstractList<T> {
 
     public void merge(MyLinkedList<T> another) {
         if (!another.isEmpty()) {
-            this.tail.next = another.head;
-            another.head.prev = this.tail;
+            if (this.isEmpty())
+                this.head = another.head;
+            else {
+                this.tail.next = another.head;
+                another.head.prev = this.tail;
+            }
             this.tail = another.tail;
+            this.size += another.size();
         }
     }
 
