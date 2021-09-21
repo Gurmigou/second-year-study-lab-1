@@ -1,32 +1,28 @@
 package Service;
 
-import DataStructure.MyLinkedList;
 import DataStructure.Pair;
 import Pojo.Edge;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import static DataStructure.Graph.GraphAlgorithm;
 
 public class GraphTraversal {
-    private final List<MyLinkedList<Pair<Integer, Edge>>> adjStructure;
+    private final List<List<Pair<Integer, Edge>>> adjStructure;
 
-    public GraphTraversal(GraphAlgorithm<Edge> graphAlgorithm) {
-        this.adjStructure = graphAlgorithm.adjStructure();
+    public GraphTraversal(List<List<Pair<Integer, Edge>>> adjStructure) {
+        this.adjStructure = adjStructure;
     }
 
     private void updateVertexMemo(int vertexNumber, double vertexProbability,
-            List<Pair<Integer, Double>> updateMemo, List<Pair<Integer, Double>> anotherMemo)
+                                  List<Pair<Integer, Double>> updateMemo, List<Pair<Integer, Double>> anotherMemo)
     {
         anotherMemo.stream()
             .map(pair -> new Pair<>(pair.left() + vertexNumber, pair.right() * vertexProbability))
             .forEach(updateMemo::add);
     }
 
-    public void dfsAnother(int vertexIndex, Edge edge,
+    public void dfs(int vertexIndex, Edge edge,
                            Map<Integer, List<Pair<Integer, Double>>> memo)
     {
         var vertexList = adjStructure.get(vertexIndex);
@@ -49,7 +45,7 @@ public class GraphTraversal {
 
             // traverse a vertex if it wasn't traversed
             if (!memo.containsKey(adjIndex))
-                dfsAnother(adjIndex, adjEdge, memo);
+                dfs(adjIndex, adjEdge, memo);
 
             var currentEdgeMemo = memo.get(vertexIndex);
 

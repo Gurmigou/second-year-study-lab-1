@@ -1,18 +1,12 @@
 package Service;
 
-import DataStructure.Graph;
+import DataStructure.GraphStructure;
 import DataStructure.MyLinkedList;
 import DataStructure.Pair;
 import Pojo.Cube;
 import Pojo.Edge;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-
-import static DataStructure.Graph.GraphAlgorithm;
+import java.util.*;
 
 public class TaskExecutor {
     private MyLinkedList<Pair<Integer, Edge>> createVertexList(MyLinkedList<Edge> edgeList, int id) {
@@ -25,11 +19,11 @@ public class TaskExecutor {
         return vertexList;
     }
 
-    private Graph<Edge> buildGraph(MyLinkedList<Cube> cubes) {
+    private GraphStructure<Edge> buildGraph(MyLinkedList<Cube> cubes) {
         // This is a general vertex which is used as a start point of graph traversal
         int generalVertex = 0;
 
-        var graph = new Graph<Edge>();
+        var graph = new GraphStructure<Edge>(new ArrayList<>());
         graph.addVertex(generalVertex);
 
         int first = 0;
@@ -59,9 +53,9 @@ public class TaskExecutor {
 
         // Map to store partial results
         var memoMap = new HashMap<Integer, List<Pair<Integer, Double>>>();
-        var graphTraversal = new GraphTraversal(GraphAlgorithm.uses(graph));
+        var graphTraversal = new GraphTraversal(graph.custom());
 
-        graphTraversal.dfsAnother(0, new Edge(0, 1), memoMap);
+        graphTraversal.dfs(0, new Edge(0, 1), memoMap);
 
         var resultMap = new TreeMap<Integer, Double>();
         memoMap.get(0)

@@ -53,6 +53,13 @@ public class MyLinkedList<T> extends AbstractList<T> {
         return addLast(value);
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean addAll(Collection<? extends T> c) {
+        merge((MyLinkedList<T>) c);
+        return true;
+    }
+
     public T getFirst() {
         return head.value;
     }
@@ -85,6 +92,21 @@ public class MyLinkedList<T> extends AbstractList<T> {
         size++;
         modCount++;
         return true;
+    }
+
+    @Override
+    public T set(int index, T element) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
+        Node<T> cur = head;
+        int pos = 0;
+        while (pos < index) {
+            cur = cur.next;
+            pos++;
+        }
+        T prevValue = cur.value;
+        cur.value = element;
+        return prevValue;
     }
 
     private void addWhenListIsEmpty(T value) {
@@ -121,6 +143,25 @@ public class MyLinkedList<T> extends AbstractList<T> {
         modCount++;
 
         return oldTail.value;
+    }
+
+    @Override
+    public void add(int index, T element) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
+        else if (index == 0)
+            addFirst(element);
+        else if (index == size - 1)
+            addLast(element);
+        else {
+            int pos = 0;
+            Node<T> prev = head;
+            while (pos < index - 1) {
+                prev = prev.next;
+                pos++;
+            }
+            addNodeBetween(element, prev, prev.next);
+        }
     }
 
     public void merge(MyLinkedList<T> another) {
