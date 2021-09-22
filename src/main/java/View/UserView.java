@@ -66,8 +66,6 @@ public class UserView {
                     edgeList.add(new Edge(numberOnEdge, probabilityOfEdge));
                 }
 
-                System.out.println("PROBABILITY: " + probability);
-
                 if (doubleEquals(probability, 1))
                     cubeList.add(new Cube(edgeList));
                 else

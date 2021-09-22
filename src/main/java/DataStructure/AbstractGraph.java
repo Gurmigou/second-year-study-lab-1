@@ -30,6 +30,15 @@ public abstract class AbstractGraph<T> implements Graph<T>, GraphAlgorithm<T> {
         return Collections.unmodifiableList(graph());
     }
 
+    protected double getWeight(T v) {
+        if (v instanceof Number number) {
+            return (v instanceof Double || v instanceof Float) ?
+                    number.doubleValue() :
+                    number.intValue();
+        }
+        throw new IllegalStateException("Parameter T of Graph isn't a number");
+    }
+
     protected List<List<Pair<Integer, T>>> graph() {
         return graph;
     }

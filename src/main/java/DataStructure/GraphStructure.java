@@ -3,6 +3,11 @@ package DataStructure;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+/**
+ * Graph implementation using adjacent structure
+ * @param <T> generic parameter of an element type of this collection
+ */
+
 public class GraphStructure<T> extends AbstractGraph<T> {
     public GraphStructure(List<List<Pair<Integer, T>>> graph) {
         super(graph);
@@ -29,17 +34,27 @@ public class GraphStructure<T> extends AbstractGraph<T> {
     }
 
     @Override
-    public void removeAdjacentVertex(int id, int adjacentToId) {
-
+    public T removeAdjacentVertex(int id, int adjacentToId) {
+        ensureVertexExist(id);
+        var row = graph().get(id);
+        var iterator = row.iterator();
+        while (iterator.hasNext()) {
+            var next = iterator.next();
+            if (next.left() == adjacentToId) {
+                iterator.remove();
+                return next.right();
+            }
+        }
+        return null;
     }
 
     private void dfsHelper(int vertex, T value, BiConsumer<Integer, ? super T> biConsumer, boolean[] marks) {
         biConsumer.accept(vertex, value);
         marks[vertex] = true;
 
-        var vertexList = graph().get(vertex);
-        for (var pair : vertexList) {
-            if (!marks[vertex])
+        var row = graph().get(vertex);
+        for (var pair : row) {
+            if (!marks[pair.left()])
                 dfsHelper(pair.left(), pair.right(), biConsumer, marks);
         }
     }
@@ -60,5 +75,35 @@ public class GraphStructure<T> extends AbstractGraph<T> {
             if (mark) marked++;
         }
         return marked == getNumberOfVertexes();
+    }
+
+
+
+    private double distanceUtil(int curVertex, int endVertex, boolean[] marks,
+                             boolean isWeighted, double curWeight)
+    {
+        if (curVertex == endVertex)
+            return curWeight;
+
+        marks[curVertex] = true;
+        var row = graph().get(curVertex);
+
+        for (var pair : row) {
+            if (!marks[pair.left()]) {
+                double weight = (isWeighted) ? getWeight(pair.right()) : 1;
+                return distanceUtil(pair.left(), endVertex, marks, isWeighted, weight + curWeight);
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public double distance(int startVertex, int endVertex, boolean isWeighted) {
+        ensureVertexExist(startVertex);
+        ensureVertexExist(endVertex);
+
+        boolean[] marks = new boolean[getNumberOfVertexes()];
+        return distanceUtil(startVertex, endVertex, marks, isWeighted, 0);
     }
 }

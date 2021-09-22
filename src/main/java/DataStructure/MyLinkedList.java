@@ -2,7 +2,11 @@ package DataStructure;
 
 import java.util.*;
 
-public class MyLinkedList<T> extends AbstractList<T> {
+/**
+ * Implementation of linked list and double ended queue (using linked lists)
+ * @param <T> generic parameter of an element type of this collection
+ */
+public class MyLinkedList<T> extends AbstractList<T> implements Deque<T> {
     private int size;
     private Node<T> head;
     private Node<T> tail;
@@ -50,7 +54,8 @@ public class MyLinkedList<T> extends AbstractList<T> {
     }
 
     public boolean add(T value) {
-        return addLast(value);
+        addLast(value);
+        return true;
     }
 
     @Override
@@ -68,7 +73,7 @@ public class MyLinkedList<T> extends AbstractList<T> {
         return tail.value;
     }
 
-    public boolean addFirst(T value) {
+    public void addFirst(T value) {
         if (isEmpty())
             addWhenListIsEmpty(value);
         else {
@@ -78,10 +83,9 @@ public class MyLinkedList<T> extends AbstractList<T> {
         }
         size++;
         modCount++;
-        return true;
     }
 
-    public boolean addLast(T value) {
+    public void addLast(T value) {
         if (isEmpty())
             addWhenListIsEmpty(value);
         else {
@@ -91,7 +95,6 @@ public class MyLinkedList<T> extends AbstractList<T> {
         }
         size++;
         modCount++;
-        return true;
     }
 
     @Override
@@ -355,5 +358,92 @@ public class MyLinkedList<T> extends AbstractList<T> {
         sb.append(']');
 
         return sb.toString();
+    }
+
+
+    @Override
+    public boolean offerFirst(T t) {
+        addFirst(t);
+        return true;
+    }
+
+    @Override
+    public boolean offerLast(T t) {
+        addLast(t);
+        return true;
+    }
+
+    @Override
+    public T pollFirst() {
+        return removeFirst();
+    }
+
+    @Override
+    public T pollLast() {
+        return removeLast();
+    }
+
+    @Override
+    public T peekFirst() {
+        return getFirst();
+    }
+
+    @Override
+    public T peekLast() {
+        return getLast();
+    }
+
+    @Override
+    public boolean removeFirstOccurrence(Object o) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean removeLastOccurrence(Object o) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean offer(T t) {
+        addLast(t);
+        return true;
+    }
+
+    @Override
+    public T remove() {
+        return removeFirst();
+    }
+
+    @Override
+    public T poll() {
+        return removeFirst();
+    }
+
+    @Override
+    public T element() {
+        T first = getFirst();
+        if (first == null)
+            throw new NoSuchElementException();
+        return first;
+    }
+
+    @Override
+    public T peek() {
+        return getFirst();
+    }
+
+    @Override
+    public void push(T t) {
+        addLast(t);
+    }
+
+    @Override
+    public T pop() {
+        return removeFirst();
+    }
+
+    @Override
+    public Iterator<T> descendingIterator() {
+        throw new UnsupportedOperationException();
     }
 }
