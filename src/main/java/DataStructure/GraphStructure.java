@@ -15,7 +15,7 @@ public class GraphStructure<T> extends AbstractGraph<T> {
         vertexList.add(vertexList.size() - 1, new Pair<>(adjacentToId, value));
     }
 
-    public void addAdjacentVertexList(int id, MyLinkedList<Pair<Integer, T>> list) {
+    public void addAdjacentVertexList(int id, List<Pair<Integer, T>> list) {
         ensureVertexExist(id);
 
         var vertexList = graph().get(id);
@@ -26,6 +26,11 @@ public class GraphStructure<T> extends AbstractGraph<T> {
         ensureVertexExist(id);
         setNumberOfVertexes(getNumberOfVertexes() - 1);
         graph().remove(id);
+    }
+
+    @Override
+    public void removeAdjacentVertex(int id, int adjacentToId) {
+
     }
 
     private void dfsHelper(int vertex, T value, BiConsumer<Integer, ? super T> biConsumer, boolean[] marks) {

@@ -1,7 +1,5 @@
 package DataStructure;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -39,7 +37,7 @@ public class GraphMatrix<T> extends AbstractGraph<T> {
     }
 
     @Override
-    public void addAdjacentVertexList(int id, MyLinkedList<Pair<Integer, T>> list) {
+    public void addAdjacentVertexList(int id, List<Pair<Integer, T>> list) {
         throw new UnsupportedOperationException("This operation isn't supported");
     }
 
@@ -79,5 +77,10 @@ public class GraphMatrix<T> extends AbstractGraph<T> {
             if (mark) marked++;
         }
         return marked == getNumberOfVertexes();
+    }
+
+    @Override
+    public void removeAdjacentVertex(int id, int adjacentToId) {
+
     }
 }

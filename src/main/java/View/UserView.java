@@ -1,11 +1,9 @@
 package View;
 
 import DataStructure.MyLinkedList;
-import DataStructure.Pair;
 import Pojo.Cube;
 import Pojo.Edge;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.IOException;
@@ -43,6 +41,10 @@ public class UserView {
         return probability;
     }
 
+    private static boolean doubleEquals(double d1, double d2) {
+        return Math.abs(d1 - d2) < 0.0001;
+    }
+
     public static MyLinkedList<Cube> input() {
         var scanner = new Scanner(System.in);
         var cubeList = new MyLinkedList<Cube>();
@@ -64,7 +66,9 @@ public class UserView {
                     edgeList.add(new Edge(numberOnEdge, probabilityOfEdge));
                 }
 
-                if (Double.compare(probability, 1) == 0)
+                System.out.println("PROBABILITY: " + probability);
+
+                if (doubleEquals(probability, 1))
                     cubeList.add(new Cube(edgeList));
                 else
                     System.out.println(probabilityError);
